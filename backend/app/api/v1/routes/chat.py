@@ -5,6 +5,7 @@ Follow-up chat about a diagnosis.
 from fastapi import APIRouter, HTTPException, Depends, status
 from bson import ObjectId
 from datetime import datetime, timezone
+from pydantic import BaseModel
 from app.core.database import get_database
 from app.core.security import get_current_user
 from app.services.chat_service import generate_chat_response
@@ -12,10 +13,14 @@ from app.services.chat_service import generate_chat_response
 router = APIRouter(prefix="/chat", tags=["Chat"])
 
 
+class ChatRequest(BaseModel):
+    message: str
+
+
 @router.post("/{diagnosis_id}")
 async def send_message(
     diagnosis_id: str,
-    message: str,
+    request: ChatRequest,
     current_user: dict = Depends(get_current_user),
 ):
     """Send a follow-up question about a diagnosis."""
@@ -63,12 +68,12 @@ async def send_message(
     ai_response = await generate_chat_response(
         diagnosis_context=diagnosis_context,
         chat_history=chat_history,
-        user_message=message,
+        user_message=request.message,
     )
 
     # Save messages to chat session
     now = datetime.now(timezone.utc)
-    user_msg = {"role": "user", "content": message, "timestamp": now.isoformat()}
+    user_msg = {"role": "user", "content": request.message, "timestamp": now.isoformat()}
     assistant_msg = {"role": "assistant", "content": ai_response, "timestamp": now.isoformat()}
 
     await db.chat_sessions.update_one(
@@ -80,7 +85,7 @@ async def send_message(
     )
 
     return {
-        "user_message": message,
+        "user_message": request.message,
         "ai_response": ai_response,
         "diagnosis_id": diagnosis_id,
     }

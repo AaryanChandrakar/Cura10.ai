@@ -16,8 +16,24 @@ interface Message {
 interface DiagnosisSummary {
     id: string;
     patient_name: string;
+    selected_specialists: string[];
+    chief_complaint: string;
+    status: string;
     created_at: string;
 }
+
+const SPECIALIST_ICONS: Record<string, string> = {
+    Cardiologist: '❤️',
+    Psychologist: '🧠',
+    Pulmonologist: '🫁',
+    Neurologist: '🧬',
+    Endocrinologist: '⚗️',
+    Oncologist: '🔬',
+    Dermatologist: '🩺',
+    Gastroenterologist: '🏥',
+    Orthopedist: '🦴',
+    'General Practitioner': '👨‍⚕️',
+};
 
 function ChatContent() {
     const { loading, isAuthenticated } = useAuth();
@@ -31,6 +47,7 @@ function ChatContent() {
     const [input, setInput] = useState('');
     const [sending, setSending] = useState(false);
     const [loadingHistory, setLoadingHistory] = useState(false);
+    const [logSearch, setLogSearch] = useState('');
 
     useEffect(() => {
         if (!loading && !isAuthenticated) router.push('/');
@@ -95,6 +112,22 @@ function ChatContent() {
         }
     };
 
+    const handleSelectDiagnosis = (id: string) => {
+        setDiagnosisId(id);
+        setMessages([]);
+    };
+
+    const selectedDiagnosis = diagnoses.find((d) => d.id === diagnosisId);
+
+    const filteredLogs = diagnoses.filter((d) => {
+        const term = logSearch.toLowerCase();
+        return (
+            d.patient_name.toLowerCase().includes(term) ||
+            (d.chief_complaint || '').toLowerCase().includes(term) ||
+            d.selected_specialists.some((s) => s.toLowerCase().includes(term))
+        );
+    });
+
     if (loading || !isAuthenticated) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
@@ -106,114 +139,176 @@ function ChatContent() {
     return (
         <div className="page-layout">
             <Sidebar />
-            <main className={`page-content ${styles.chatLayout}`}>
-                <div className={styles.chatHeader}>
-                    <div>
-                        <h1 className="page-title">Follow-Up Chat</h1>
-                        <p className="page-subtitle">Ask questions about a diagnosis.</p>
+            <main className={`page-content ${styles.chatPage}`}>
+                {/* Left: Diagnosis Logs Panel */}
+                <div className={styles.logsPanel}>
+                    <div className={styles.logsPanelHeader}>
+                        <h2 className={styles.logsPanelTitle}>💬 Chat Sessions</h2>
+                        <span className={styles.logsCount}>{diagnoses.length}</span>
                     </div>
-                    <select
-                        className="input-field"
-                        value={diagnosisId}
-                        onChange={(e) => {
-                            setDiagnosisId(e.target.value);
-                            setMessages([]);
-                        }}
-                        style={{ maxWidth: 300 }}
-                    >
-                        <option value="">Select a diagnosis...</option>
-                        {diagnoses.map((d) => (
-                            <option key={d.id} value={d.id}>
-                                {d.patient_name} — {new Date(d.created_at).toLocaleDateString()}
-                            </option>
-                        ))}
-                    </select>
+
+                    <input
+                        type="text"
+                        className={styles.logsSearch}
+                        placeholder="🔍 Search logs..."
+                        value={logSearch}
+                        onChange={(e) => setLogSearch(e.target.value)}
+                    />
+
+                    <div className={styles.logsList}>
+                        {filteredLogs.length === 0 ? (
+                            <div className={styles.logsEmpty}>
+                                <p>No diagnoses found</p>
+                            </div>
+                        ) : (
+                            filteredLogs.map((d) => (
+                                <button
+                                    key={d.id}
+                                    className={`${styles.logRow} ${diagnosisId === d.id ? styles.logRowActive : ''}`}
+                                    onClick={() => handleSelectDiagnosis(d.id)}
+                                >
+                                    <div className={styles.logRowTop}>
+                                        <span className={styles.logAvatar}>
+                                            {d.patient_name.charAt(0).toUpperCase()}
+                                        </span>
+                                        <div className={styles.logMeta}>
+                                            <span className={styles.logPatient}>{d.patient_name}</span>
+                                            <span className={styles.logDate}>
+                                                {new Date(d.created_at).toLocaleDateString('en-US', {
+                                                    month: 'short', day: 'numeric', year: 'numeric',
+                                                })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {d.chief_complaint && (
+                                        <p className={styles.logComplaint}>{d.chief_complaint}</p>
+                                    )}
+                                    <div className={styles.logSpecialists}>
+                                        {d.selected_specialists.slice(0, 3).map((s) => (
+                                            <span key={s} className={styles.logTag}>
+                                                {SPECIALIST_ICONS[s] || '👨‍⚕️'} {s}
+                                            </span>
+                                        ))}
+                                        {d.selected_specialists.length > 3 && (
+                                            <span className={styles.logTag}>+{d.selected_specialists.length - 3}</span>
+                                        )}
+                                    </div>
+                                </button>
+                            ))
+                        )}
+                    </div>
                 </div>
 
-                {!diagnosisId ? (
-                    <div className="empty-state">
-                        <span className="empty-state-icon">💬</span>
-                        <p>Select a diagnosis to start a follow-up conversation.</p>
-                    </div>
-                ) : (
-                    <>
-                        {/* Messages */}
-                        <div className={styles.messagesContainer}>
-                            {loadingHistory ? (
-                                <div style={{ display: 'flex', justifyContent: 'center', padding: 40 }}>
-                                    <div className="spinner" />
-                                </div>
-                            ) : messages.length === 0 ? (
-                                <div className={styles.welcomeChat}>
-                                    <span style={{ fontSize: '2rem' }}>💬</span>
-                                    <h3>Ask anything about this diagnosis</h3>
-                                    <p>
-                                        Your questions will be answered in context of the specialist reports and final
-                                        diagnosis.
-                                    </p>
-                                    <div className={styles.suggestions}>
-                                        {[
-                                            'What are the key findings?',
-                                            'Which issue is most urgent?',
-                                            'What tests should I take next?',
-                                        ].map((q) => (
-                                            <button
-                                                key={q}
-                                                className={styles.suggestion}
-                                                onClick={() => { setInput(q); }}
-                                            >
-                                                {q}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            ) : (
-                                messages.map((msg, i) => (
-                                    <div
-                                        key={i}
-                                        className={`${styles.message} ${msg.role === 'user' ? styles.userMessage : styles.aiMessage}`}
-                                    >
-                                        <div className={styles.messageAvatar}>
-                                            {msg.role === 'user' ? '👤' : '🤖'}
-                                        </div>
-                                        <div className={styles.messageBubble}>
-                                            <pre className={styles.messageText}>{msg.content}</pre>
-                                        </div>
-                                    </div>
-                                ))
+                {/* Right: Chat Interface */}
+                <div className={styles.chatArea}>
+                    {/* Chat Header */}
+                    <div className={styles.chatHeader}>
+                        <div>
+                            <h1 className={styles.chatTitle}>
+                                {selectedDiagnosis
+                                    ? `💬 Chat — ${selectedDiagnosis.patient_name}`
+                                    : '💬 Follow-Up Chat'}
+                            </h1>
+                            {selectedDiagnosis?.chief_complaint && (
+                                <p className={styles.chatSubtitle}>{selectedDiagnosis.chief_complaint}</p>
                             )}
-                            {sending && (
-                                <div className={`${styles.message} ${styles.aiMessage}`}>
-                                    <div className={styles.messageAvatar}>🤖</div>
-                                    <div className={styles.messageBubble}>
-                                        <div className="spinner" style={{ width: 18, height: 18 }} />
-                                    </div>
-                                </div>
-                            )}
-                            <div ref={chatEndRef} />
                         </div>
-
-                        {/* Input */}
-                        <div className={styles.inputBar}>
-                            <textarea
-                                className={styles.chatInput}
-                                placeholder="Type your question... (Enter to send)"
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                rows={1}
-                                disabled={sending}
-                            />
+                        {selectedDiagnosis && (
                             <button
-                                className="btn btn-primary"
-                                onClick={handleSend}
-                                disabled={!input.trim() || sending}
+                                className="btn btn-outline btn-sm"
+                                onClick={() => router.push(`/diagnosis/${diagnosisId}`)}
                             >
-                                Send →
+                                View Diagnosis →
                             </button>
+                        )}
+                    </div>
+
+                    {!diagnosisId ? (
+                        <div className={styles.emptyChat}>
+                            <span className={styles.emptyChatIcon}>💬</span>
+                            <h3>Select a Diagnosis</h3>
+                            <p>Choose a diagnosis from the left panel to start a follow-up conversation.</p>
                         </div>
-                    </>
-                )}
+                    ) : (
+                        <>
+                            {/* Messages */}
+                            <div className={styles.messagesContainer}>
+                                {loadingHistory ? (
+                                    <div style={{ display: 'flex', justifyContent: 'center', padding: 40 }}>
+                                        <div className="spinner" />
+                                    </div>
+                                ) : messages.length === 0 ? (
+                                    <div className={styles.welcomeChat}>
+                                        <span style={{ fontSize: '2rem' }}>💬</span>
+                                        <h3>Ask anything about this diagnosis</h3>
+                                        <p>
+                                            Your questions will be answered in context of the specialist reports and final
+                                            diagnosis.
+                                        </p>
+                                        <div className={styles.suggestions}>
+                                            {[
+                                                'What are the key findings?',
+                                                'Which issue is most urgent?',
+                                                'What tests should I take next?',
+                                            ].map((q) => (
+                                                <button
+                                                    key={q}
+                                                    className={styles.suggestion}
+                                                    onClick={() => { setInput(q); }}
+                                                >
+                                                    {q}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    messages.map((msg, i) => (
+                                        <div
+                                            key={i}
+                                            className={`${styles.message} ${msg.role === 'user' ? styles.userMessage : styles.aiMessage}`}
+                                        >
+                                            <div className={styles.messageAvatar}>
+                                                {msg.role === 'user' ? '👤' : '🤖'}
+                                            </div>
+                                            <div className={styles.messageBubble}>
+                                                <pre className={styles.messageText}>{msg.content}</pre>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                                {sending && (
+                                    <div className={`${styles.message} ${styles.aiMessage}`}>
+                                        <div className={styles.messageAvatar}>🤖</div>
+                                        <div className={styles.messageBubble}>
+                                            <div className="spinner" style={{ width: 18, height: 18 }} />
+                                        </div>
+                                    </div>
+                                )}
+                                <div ref={chatEndRef} />
+                            </div>
+
+                            {/* Input */}
+                            <div className={styles.inputBar}>
+                                <textarea
+                                    className={styles.chatInput}
+                                    placeholder="Type your question... (Enter to send)"
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    rows={1}
+                                    disabled={sending}
+                                />
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={handleSend}
+                                    disabled={!input.trim() || sending}
+                                >
+                                    Send →
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
             </main>
         </div>
     );
