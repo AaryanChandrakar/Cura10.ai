@@ -134,9 +134,9 @@ jobs:
           docker logs cura10-test
           docker stop cura10-test
 
-  # ── Deploy to Azure ────────────────────────────────────
+  # ── Deploy to AWS (Elastic Beanstalk) ──────────────────
   deploy:
-    name: Deploy to Azure
+    name: Deploy to AWS Elastic Beanstalk
     runs-on: ubuntu-latest
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -146,26 +146,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Login to Azure
-        uses: azure/login@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Build and deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
+      - name: Create ZIP deployment package
+        working-directory: backend
+        run: zip -r deploy_package.zip . -x "*.venv*" "*__pycache__*" "*.git*"
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22
         with:
-          app-name: ${{ secrets.AZURE_BACKEND_APP_NAME }}
-          package: ./backend
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ secrets.AWS_EB_APP_NAME }}
+          environment_name: ${{ secrets.AWS_EB_ENV_NAME }}
+          version_label: cura10-backend-${{ github.sha }}
+          region: ${{ secrets.AWS_REGION }}
+          deployment_package: backend/deploy_package.zip
 
       - name: Smoke test deployed API
         run: |
           echo "Waiting for deployment to stabilize..."
-          sleep 30
-          HEALTH_URL="https://${{ secrets.AZURE_BACKEND_APP_NAME }}.azurewebsites.net/health"
+          sleep 45
+          HEALTH_URL="https://${{ secrets.AWS_BACKEND_DOMAIN }}/health"
           echo "Checking: $HEALTH_URL"
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$HEALTH_URL" || echo "000")
           if [ "$HTTP_STATUS" = "200" ]; then
             echo "✅ Health check passed (HTTP $HTTP_STATUS)"
           else
-            echo "⚠️ Health check returned HTTP $HTTP_STATUS (may still be starting)"
+            echo "⚠️ Health check returned HTTP $HTTP_STATUS"
           fi

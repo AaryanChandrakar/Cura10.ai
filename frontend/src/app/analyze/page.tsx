@@ -61,7 +61,6 @@ export default function AnalyzePage() {
     const [selectingSpecialists, setSelectingSpecialists] = useState(false);
 
     // Diagnosis state
-    const [_running, setRunning] = useState(false);
     const [diagnosisId, setDiagnosisId] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -151,7 +150,6 @@ export default function AnalyzePage() {
     const handleRunDiagnosis = async () => {
         if (!reportId || selected.length === 0) return;
         setError(null);
-        setRunning(true);
         setStep('running');
         setProgress(0);
         setProgressMessage('Initializing AI agents...');
@@ -182,7 +180,6 @@ export default function AnalyzePage() {
             clearInterval(progressInterval);
             setError(err instanceof Error ? err.message : 'Diagnosis failed');
             setStep('specialists');
-            setRunning(false);
         }
     };
 
@@ -426,7 +423,6 @@ export default function AnalyzePage() {
                                         setReportId(null);
                                         setDiagnosisId(null);
                                         setProgress(0);
-                                        setRunning(false);
                                     }}
                                 >
                                     Run Another Diagnosis
