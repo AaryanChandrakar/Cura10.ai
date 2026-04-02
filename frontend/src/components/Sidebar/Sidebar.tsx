@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useDemo } from '@/context/DemoContext';
+import { DEMO_REPORTS } from '@/lib/demoReports';
 import styles from './Sidebar.module.css';
 
 const NAV_ITEMS = [
@@ -21,7 +23,15 @@ const ADMIN_ITEMS = [
 
 export default function Sidebar() {
     const pathname = usePathname();
+    const router = useRouter();
     const { user, logout } = useAuth();
+    const { selectDemo } = useDemo();
+    const [demoOpen, setDemoOpen] = useState(false);
+
+    const handleDemoClick = (report: typeof DEMO_REPORTS[0]) => {
+        selectDemo(report);
+        router.push('/analyze');
+    };
 
     return (
         <aside className={styles.sidebar}>
@@ -49,6 +59,39 @@ export default function Sidebar() {
                             {pathname === item.href && <span className={styles.activeIndicator} />}
                         </Link>
                     ))}
+                </div>
+
+                {/* Demo Reports Section */}
+                <div className={styles.navSection}>
+                    <button
+                        className={styles.demoToggle}
+                        onClick={() => setDemoOpen(!demoOpen)}
+                        aria-expanded={demoOpen}
+                    >
+                        <span className={styles.navLabel} style={{ marginBottom: 0 }}>
+                            🧪 Demo Reports
+                        </span>
+                        <span className={`${styles.demoChevron} ${demoOpen ? styles.demoChevronOpen : ''}`}>
+                            ›
+                        </span>
+                    </button>
+
+                    <div className={`${styles.demoList} ${demoOpen ? styles.demoListOpen : ''}`}>
+                        {DEMO_REPORTS.map((report) => (
+                            <button
+                                key={report.id}
+                                className={styles.demoItem}
+                                onClick={() => handleDemoClick(report)}
+                                title={`${report.patientName} — ${report.condition}`}
+                            >
+                                <span className={styles.demoIcon}>{report.icon}</span>
+                                <div className={styles.demoInfo}>
+                                    <span className={styles.demoName}>{report.patientName}</span>
+                                    <span className={styles.demoCondition}>{report.condition}</span>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Admin Section */}

@@ -56,6 +56,24 @@
     overflow-y: auto;
 }
 
+/* Custom scrollbar for nav */
+.nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.nav::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.nav::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 .navSection {
     padding: 0 var(--space-4);
     margin-bottom: var(--space-6);
@@ -115,7 +133,139 @@
     border-radius: 3px 0 0 3px;
 }
 
-/* User Section */
+/* ── Demo Reports Section ─────────────────────────────── */
+
+.demoToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.demoToggle:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.demoChevron {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: transform var(--transition-base);
+    line-height: 1;
+}
+
+.demoChevronOpen {
+    transform: rotate(90deg);
+}
+
+.demoList {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.25s ease;
+    opacity: 0;
+    margin-top: 0;
+}
+
+.demoListOpen {
+    max-height: 600px;
+    opacity: 1;
+    margin-top: var(--space-2);
+}
+
+.demoItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 2px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: left;
+}
+
+.demoItem:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(10, 110, 189, 0.12),
+        rgba(18, 184, 134, 0.08)
+    );
+    transform: translateX(3px);
+}
+
+.demoItem:active {
+    transform: translateX(1px);
+    background: linear-gradient(
+        135deg,
+        rgba(10, 110, 189, 0.2),
+        rgba(18, 184, 134, 0.12)
+    );
+}
+
+.demoIcon {
+    font-size: 1rem;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.demoInfo {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 1px;
+}
+
+.demoName {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.78);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+.demoCondition {
+    font-size: 0.68rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+.demoItem:hover .demoName {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.demoItem:hover .demoCondition {
+    color: rgba(56, 217, 169, 0.85);
+}
+
+.demoItem:hover .demoIcon {
+    background: rgba(10, 110, 189, 0.15);
+    border-color: rgba(10, 110, 189, 0.25);
+}
+
+/* ── User Section ─────────────────────────────────────── */
+
 .userSection {
     display: flex;
     align-items: center;

@@ -383,10 +383,11 @@ input, textarea, select {
 }
 
 .specialist-chip.selected {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-  color: var(--color-text-inverse);
+  background: linear-gradient(135deg, rgba(10, 110, 189, 0.12), rgba(18, 184, 134, 0.10));
+  color: var(--color-text);
   border-color: var(--color-primary);
-  box-shadow: 0 2px 8px rgba(10, 110, 189, 0.3);
+  box-shadow: 0 2px 8px rgba(10, 110, 189, 0.18);
+  font-weight: 600;
 }
 
 .specialist-chip.recommended {

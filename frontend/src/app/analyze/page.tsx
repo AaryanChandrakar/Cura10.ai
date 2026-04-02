@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useDemo } from '@/context/DemoContext';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import {
     uploadReport,
@@ -37,6 +38,7 @@ const SPECIALIST_ICONS: Record<string, string> = {
 
 export default function AnalyzePage() {
     const { loading, isAuthenticated } = useAuth();
+    const { selectedDemo, clearDemo } = useDemo();
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -76,6 +78,22 @@ export default function AnalyzePage() {
             .then((res) => setAllSpecialists(res.specialists || []))
             .catch(() => { });
     }, []);
+
+    // Pre-fill form when a demo report is selected from the sidebar
+    useEffect(() => {
+        if (selectedDemo) {
+            setMode('text');
+            setTextContent(selectedDemo.content);
+            setPatientName(selectedDemo.patientName);
+            setStep('upload');
+            setFile(null);
+            setReportId(null);
+            setDiagnosisId(null);
+            setProgress(0);
+            setError(null);
+            clearDemo();
+        }
+    }, [selectedDemo, clearDemo]);
 
     // Handle file drop
     const handleDrop = (e: React.DragEvent) => {

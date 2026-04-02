@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
+import { DemoProvider } from '@/context/DemoContext';
 import CookieConsent from '@/components/CookieConsent/CookieConsent';
 
 export const metadata: Metadata = {
@@ -24,8 +25,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider>
-          {children}
-          <CookieConsent />
+          <DemoProvider>
+            {children}
+            <CookieConsent />
+          </DemoProvider>
         </AuthProvider>
       </body>
     </html>
