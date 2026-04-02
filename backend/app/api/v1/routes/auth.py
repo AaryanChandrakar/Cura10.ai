@@ -47,19 +47,17 @@ async def auth_callback(request: Request):
     try:
         token = await oauth.google.authorize_access_token(request)
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"OAuth error: {str(e)}",
-        )
+        # Instead of raising a 400 JSON error, redirect back to frontend with an error flag
+        return RedirectResponse(url=f"{settings.FRONTEND_URL}/?error=oauth_failed")
 
     user_info = token.get("userinfo")
     if not user_info:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not retrieve user info from Google.",
-        )
+        return RedirectResponse(url=f"{settings.FRONTEND_URL}/?error=no_user_info")
 
     db = get_database()
+    if db is None:
+        # If DB isn't connected, redirect with a specific error
+        return RedirectResponse(url=f"{settings.FRONTEND_URL}/?error=database_unavailable")
 
     # Check if user already exists
     existing_user = await db.users.find_one({"google_id": user_info["sub"]})

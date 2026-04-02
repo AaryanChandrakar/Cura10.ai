@@ -138,6 +138,8 @@ async def run_diagnosis_endpoint(
 @router.get("/history")
 async def diagnosis_history(current_user: dict = Depends(get_current_user)):
     """Get all past diagnoses for the current user."""
+    import re
+
     db = get_database()
     cursor = db.diagnoses.find(
         {"user_id": current_user["_id"]}
@@ -145,11 +147,34 @@ async def diagnosis_history(current_user: dict = Depends(get_current_user)):
 
     diagnoses = []
     async for doc in cursor:
+        # Look up original report to extract the chief complaint
+        chief_complaint = ""
+        report_id = doc.get("report_id")
+        if report_id:
+            try:
+                report = await db.reports.find_one({"_id": ObjectId(report_id)})
+                if report and report.get("content"):
+                    content = report["content"]
+                    # Try to extract "Chief Complaint:" section
+                    match = re.search(
+                        r"Chief Complaint\s*:\s*\n?(.*?)(?:\n\s*\n|\n[A-Z])",
+                        content,
+                        re.IGNORECASE | re.DOTALL,
+                    )
+                    if match:
+                        chief_complaint = match.group(1).strip()
+                        # Truncate if too long
+                        if len(chief_complaint) > 120:
+                            chief_complaint = chief_complaint[:117] + "..."
+            except Exception:
+                pass
+
         diagnoses.append({
             "id": str(doc["_id"]),
-            "report_id": doc.get("report_id"),
+            "report_id": report_id,
             "patient_name": doc.get("patient_name", "Unknown"),
             "selected_specialists": doc.get("selected_specialists", []),
+            "chief_complaint": chief_complaint,
             "status": doc.get("status", "completed"),
             "created_at": doc.get("created_at"),
         })
