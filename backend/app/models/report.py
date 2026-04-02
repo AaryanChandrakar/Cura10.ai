@@ -1,5 +1,5 @@
 """
-Cura3.ai — Report Data Models
+Cura10.ai — Report Data Models
 """
 from pydantic import BaseModel, Field
 from typing import Optional, Literal

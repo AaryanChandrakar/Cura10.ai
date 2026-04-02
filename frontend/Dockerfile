@@ -1,4 +1,4 @@
-# Cura3.ai Frontend — Dockerfile
+# Cura10.ai Frontend — Dockerfile
 FROM node:22-alpine AS builder
 
 WORKDIR /app

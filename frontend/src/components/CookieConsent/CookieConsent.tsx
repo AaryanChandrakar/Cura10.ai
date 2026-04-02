@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './CookieConsent.module.css';
 
-const CONSENT_KEY = 'cura3_cookie_consent';
+const CONSENT_KEY = 'cura10_cookie_consent';
 
 export default function CookieConsent() {
     const [visible, setVisible] = useState(false);
@@ -40,7 +40,7 @@ export default function CookieConsent() {
                     </div>
                     <p className={styles.description}>
                         We use essential cookies to keep you signed in and ensure the platform works correctly.
-                        We also use analytics cookies to understand how you use Cura3.ai so we can improve the experience.
+                        We also use analytics cookies to understand how you use Cura10.ai so we can improve the experience.
                         No personal health information (PHI) is ever stored in cookies.
                     </p>
                     <p className={styles.links}>

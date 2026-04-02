@@ -1,5 +1,5 @@
 # ============================================================
-#  Cura3.ai — Docker Compose
+#  Cura10.ai — Docker Compose
 #  Run the full platform locally: Backend + Frontend
 # ============================================================
 
@@ -9,7 +9,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: cura3-backend
+    container_name: cura10-backend
     ports:
       - "8000:8000"
     env_file:
@@ -30,7 +30,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: http://localhost:8000
-    container_name: cura3-frontend
+    container_name: cura10-frontend
     ports:
       - "3000:3000"
     depends_on:

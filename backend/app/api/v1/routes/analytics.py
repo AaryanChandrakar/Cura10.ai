@@ -1,5 +1,5 @@
 """
-Cura3.ai — Analytics Routes
+Cura10.ai — Analytics Routes
 Usage statistics and tracking.
 """
 from fastapi import APIRouter, Depends

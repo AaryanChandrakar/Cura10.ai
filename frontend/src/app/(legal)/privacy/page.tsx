@@ -3,8 +3,8 @@ import Link from 'next/link';
 import styles from '../legal.module.css';
 
 export const metadata: Metadata = {
-    title: 'Privacy Policy — Cura3.ai',
-    description: 'How Cura3.ai collects, uses, and protects your personal and medical data.',
+    title: 'Privacy Policy — Cura10.ai',
+    description: 'How Cura10.ai collects, uses, and protects your personal and medical data.',
 };
 
 export default function PrivacyPage() {
@@ -78,7 +78,7 @@ export default function PrivacyPage() {
             <div className={styles.section}>
                 <h2>7. Contact</h2>
                 <p>
-                    For privacy questions or data deletion requests, contact us at <strong>privacy@cura3.ai</strong>.
+                    For privacy questions or data deletion requests, contact us at <strong>privacy@cura10.ai</strong>.
                 </p>
             </div>
         </div>

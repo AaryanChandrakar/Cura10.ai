@@ -97,7 +97,7 @@ export default function SettingsPage() {
 
                 {/* About */}
                 <div className={`card ${styles.aboutCard}`}>
-                    <h2 className={styles.cardTitle}>ℹ️ About Cura3.ai</h2>
+                    <h2 className={styles.cardTitle}>ℹ️ About Cura10.ai</h2>
                     <div className={styles.aboutInfo}>
                         <div className={styles.field}>
                             <span className={styles.fieldLabel}>Version</span>

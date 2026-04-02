@@ -1,5 +1,5 @@
 """
-Cura3.ai — Report Management Routes
+Cura10.ai — Report Management Routes
 Upload, list, view, and delete medical reports.
 """
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Depends, status

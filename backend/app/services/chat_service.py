@@ -1,5 +1,5 @@
 """
-Cura3.ai — Follow-Up Chat Service
+Cura10.ai — Follow-Up Chat Service
 Provides context-aware follow-up chat about a diagnosis.
 """
 from langchain_openai import ChatOpenAI
@@ -9,7 +9,7 @@ import os
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY
 
 CHAT_SYSTEM_PROMPT = """
-You are Cura3.ai, a medical AI assistant. You are helping a user understand
+You are Cura10.ai, a medical AI assistant. You are helping a user understand
 their medical diagnosis report.
 
 CONTEXT - The following diagnosis was generated for the patient:
@@ -64,9 +64,9 @@ async def generate_chat_response(
         # Build a single prompt from messages
         combined_prompt = system_prompt + "\n\n"
         for msg in messages[1:]:  # Skip system (already included)
-            role_label = "Patient" if msg["role"] == "user" else "Cura3.ai"
+            role_label = "Patient" if msg["role"] == "user" else "Cura10.ai"
             combined_prompt += f"{role_label}: {msg['content']}\n\n"
-        combined_prompt += "Cura3.ai:"
+        combined_prompt += "Cura10.ai:"
 
         response = model.invoke(combined_prompt)
         content = response.content

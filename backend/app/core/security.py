@@ -1,5 +1,5 @@
 """
-Cura3.ai — Security Utilities
+Cura10.ai — Security Utilities
 JWT token handling, password-less Google OAuth, and role-based access control.
 Supports dual-mode auth: Bearer header OR httpOnly cookie.
 """
@@ -14,7 +14,7 @@ from app.core.database import get_database
 # auto_error=False so we can fall back to cookie-based auth
 security_scheme = HTTPBearer(auto_error=False)
 
-COOKIE_NAME = "cura3_session"
+COOKIE_NAME = "cura10_session"
 
 
 # ── JWT Token Management ─────────────────────────────────

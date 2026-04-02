@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const refreshUser = useCallback(async () => {
         try {
-            const token = localStorage.getItem('cura3_token');
+            const token = localStorage.getItem('cura10_token');
             if (!token) {
                 setUser(null);
                 setLoading(false);
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             const userData = await fetchCurrentUser();
             setUser(userData);
         } catch {
-            localStorage.removeItem('cura3_token');
+            localStorage.removeItem('cura10_token');
             setUser(null);
         } finally {
             setLoading(false);
@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const logout = async () => {
         await serverLogout();
-        localStorage.removeItem('cura3_token');
+        localStorage.removeItem('cura10_token');
         setUser(null);
         window.location.href = '/';
     };

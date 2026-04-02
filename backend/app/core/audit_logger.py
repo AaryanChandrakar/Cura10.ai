@@ -1,5 +1,5 @@
 """
-Cura3.ai — Audit Logging Middleware
+Cura10.ai — Audit Logging Middleware
 HIPAA-compliant audit trail for data access events.
 Tracks: who accessed what resource, when, from where.
 """

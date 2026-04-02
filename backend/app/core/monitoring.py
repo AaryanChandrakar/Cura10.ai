@@ -1,5 +1,5 @@
 """
-Cura3.ai — Azure Application Insights Integration
+Cura10.ai — Azure Application Insights Integration
 Provides telemetry, error tracking, and performance monitoring.
 
 To activate, set APPINSIGHTS_CONNECTION_STRING in environment variables.
@@ -10,7 +10,7 @@ import os
 from functools import wraps
 from time import time
 
-logger = logging.getLogger("cura3.monitoring")
+logger = logging.getLogger("cura10.monitoring")
 
 # ── Connection String ────────────────────────────────────
 _CONNECTION_STRING = os.getenv("APPINSIGHTS_CONNECTION_STRING", "")
@@ -72,7 +72,7 @@ def track_exception(exception: Exception, properties: dict = None):
     try:
         from opencensus.ext.azure.log_exporter import AzureLogHandler
 
-        az_logger = logging.getLogger("cura3.errors")
+        az_logger = logging.getLogger("cura10.errors")
         if not any(isinstance(h, AzureLogHandler) for h in az_logger.handlers):
             handler = AzureLogHandler(connection_string=_CONNECTION_STRING)
             az_logger.addHandler(handler)

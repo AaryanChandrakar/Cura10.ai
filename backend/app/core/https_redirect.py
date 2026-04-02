@@ -1,5 +1,5 @@
 """
-Cura3.ai — HTTPS Redirect Middleware
+Cura10.ai — HTTPS Redirect Middleware
 Enforces HTTPS in production by redirecting HTTP requests to HTTPS.
 Respects the X-Forwarded-Proto header set by Azure / load balancers.
 """

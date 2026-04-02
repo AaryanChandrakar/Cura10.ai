@@ -1,5 +1,5 @@
 """
-Cura3.ai — Smart Specialist Selector
+Cura10.ai — Smart Specialist Selector
 Uses an LLM call to analyze the medical report and recommend
 the most relevant specialists for the case.
 """

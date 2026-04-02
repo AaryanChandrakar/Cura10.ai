@@ -1,5 +1,5 @@
 # ============================================================
-# Cura3.ai — Backend CI/CD Pipeline
+# Cura10.ai — Backend CI/CD Pipeline
 # Build, test, and deploy the FastAPI backend to Azure
 # ============================================================
 
@@ -52,7 +52,7 @@ jobs:
         working-directory: backend
         env:
           MONGODB_URI: "mongodb://localhost:27017"
-          MONGODB_DB_NAME: "cura3ai_test"
+          MONGODB_DB_NAME: "cura10ai_test"
           GOOGLE_API_KEY: "test-key"
           JWT_SECRET_KEY: "test-secret-key-for-ci"
         run: |
@@ -74,7 +74,7 @@ jobs:
 
           # Test 2: Settings load correctly
           print('✓ Testing settings...')
-          assert settings.APP_NAME == 'Cura3.ai'
+          assert settings.APP_NAME == 'Cura10.ai'
           assert settings.API_V1_PREFIX == '/api/v1'
           print('  Settings OK')
 
@@ -120,19 +120,19 @@ jobs:
 
       - name: Build Docker image
         working-directory: backend
-        run: docker build -t cura3-backend:${{ github.sha }} .
+        run: docker build -t cura10-backend:${{ github.sha }} .
 
       - name: Verify image runs
         run: |
-          docker run -d --name cura3-test \
+          docker run -d --name cura10-test \
             -e MONGODB_URI="mongodb://localhost:27017" \
             -e GOOGLE_API_KEY="test" \
             -e JWT_SECRET_KEY="test-secret" \
             -p 8000:8000 \
-            cura3-backend:${{ github.sha }}
+            cura10-backend:${{ github.sha }}
           sleep 5
-          docker logs cura3-test
-          docker stop cura3-test
+          docker logs cura10-test
+          docker stop cura10-test
 
   # ── Deploy to Azure ────────────────────────────────────
   deploy:

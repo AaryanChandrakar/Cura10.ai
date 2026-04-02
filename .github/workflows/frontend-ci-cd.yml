@@ -1,5 +1,5 @@
 # ============================================================
-# Cura3.ai — Frontend CI/CD Pipeline
+# Cura10.ai — Frontend CI/CD Pipeline
 # Build, test, and deploy the Next.js frontend to Azure
 # ============================================================
 
@@ -48,7 +48,7 @@ jobs:
       - name: Build
         working-directory: frontend
         env:
-          NEXT_PUBLIC_API_URL: "https://api.cura3.ai"
+          NEXT_PUBLIC_API_URL: "https://api.cura10.ai"
         run: npm run build
 
       - name: Verify build output
@@ -91,16 +91,16 @@ jobs:
         working-directory: frontend
         run: |
           docker build \
-            --build-arg NEXT_PUBLIC_API_URL="https://api.cura3.ai" \
-            -t cura3-frontend:${{ github.sha }} .
+            --build-arg NEXT_PUBLIC_API_URL="https://api.cura10.ai" \
+            -t cura10-frontend:${{ github.sha }} .
 
       - name: Verify image runs
         run: |
-          docker run -d --name cura3-fe-test -p 3000:3000 cura3-frontend:${{ github.sha }}
+          docker run -d --name cura10-fe-test -p 3000:3000 cura10-frontend:${{ github.sha }}
           sleep 8
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000" || echo "000")
           echo "Frontend responded with HTTP $HTTP_STATUS"
-          docker stop cura3-fe-test
+          docker stop cura10-fe-test
 
   # ── Deploy to Azure ────────────────────────────────────
   deploy:
@@ -131,7 +131,7 @@ jobs:
         run: |
           echo "Waiting for deployment to stabilize..."
           sleep 30
-          SITE_URL="${{ secrets.AZURE_FRONTEND_URL || 'https://cura3.ai' }}"
+          SITE_URL="${{ secrets.AZURE_FRONTEND_URL || 'https://cura10.ai' }}"
           echo "Checking: $SITE_URL"
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SITE_URL" || echo "000")
           if [ "$HTTP_STATUS" = "200" ]; then

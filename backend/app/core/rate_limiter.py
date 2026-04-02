@@ -1,5 +1,5 @@
 """
-Cura3.ai — Rate Limiting Middleware
+Cura10.ai — Rate Limiting Middleware
 Simple in-memory rate limiter using sliding window.
 """
 import time

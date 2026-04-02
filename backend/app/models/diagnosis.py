@@ -1,5 +1,5 @@
 """
-Cura3.ai — Diagnosis Data Models
+Cura10.ai — Diagnosis Data Models
 """
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict

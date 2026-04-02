@@ -1,5 +1,5 @@
 """
-Cura3.ai — Authentication Routes
+Cura10.ai — Authentication Routes
 Google OAuth 2.0 flow + JWT token management.
 Tokens are issued as httpOnly secure cookies for XSS protection.
 """
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 # ── Cookie Configuration ─────────────────────────────────
 IS_PRODUCTION = not settings.FRONTEND_URL.startswith("http://localhost")
-COOKIE_NAME = "cura3_session"
+COOKIE_NAME = "cura10_session"
 COOKIE_MAX_AGE = settings.JWT_EXPIRATION_MINUTES * 60  # seconds
 
 # ── Google OAuth Setup ───────────────────────────────────

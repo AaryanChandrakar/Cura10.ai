@@ -1,5 +1,5 @@
 """
-Cura3.ai — Application Configuration
+Cura10.ai — Application Configuration
 Centralized settings loaded from environment variables.
 """
 from pydantic_settings import BaseSettings
@@ -10,14 +10,14 @@ class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
     # ── App ──────────────────────────────────────
-    APP_NAME: str = "Cura3.ai"
+    APP_NAME: str = "Cura10.ai"
     APP_VERSION: str = "2.0.0"
     DEBUG: bool = False
     API_V1_PREFIX: str = "/api/v1"
 
     # ── MongoDB Atlas ────────────────────────────
     MONGODB_URI: str = "mongodb://localhost:27017"
-    MONGODB_DB_NAME: str = "cura3ai"
+    MONGODB_DB_NAME: str = "cura10ai"
 
     # ── OpenAI API ────────────────────────────────
     OPENAI_API_KEY: str = ""

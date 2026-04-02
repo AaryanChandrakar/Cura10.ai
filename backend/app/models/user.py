@@ -1,5 +1,5 @@
 """
-Cura3.ai — User Data Models
+Cura10.ai — User Data Models
 """
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional, Literal

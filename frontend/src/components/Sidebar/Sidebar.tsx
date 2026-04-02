@@ -39,7 +39,7 @@ export default function Sidebar() {
             <div className={styles.logo}>
                 <Link href="/dashboard" className={styles.logoLink}>
                     <span className={styles.logoIcon}>🏥</span>
-                    <span className={styles.logoText}>Cura3.ai</span>
+                    <span className={styles.logoText}>Cura10.ai</span>
                 </Link>
                 <span className={styles.logoBadge}>v2.0</span>
             </div>

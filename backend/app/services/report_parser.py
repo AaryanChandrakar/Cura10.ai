@@ -1,5 +1,5 @@
 """
-Cura3.ai — Report Parser
+Cura10.ai — Report Parser
 Parses uploaded files (.txt, .pdf, .docx) and extracts text content.
 """
 import io

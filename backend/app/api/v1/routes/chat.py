@@ -1,5 +1,5 @@
 """
-Cura3.ai — Chat Routes
+Cura10.ai — Chat Routes
 Follow-up chat about a diagnosis.
 """
 from fastapi import APIRouter, HTTPException, Depends, status

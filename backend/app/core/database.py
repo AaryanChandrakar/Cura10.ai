@@ -1,5 +1,5 @@
 """
-Cura3.ai — MongoDB Atlas Connection
+Cura10.ai — MongoDB Atlas Connection
 Async MongoDB client using Motor driver.
 """
 import certifi

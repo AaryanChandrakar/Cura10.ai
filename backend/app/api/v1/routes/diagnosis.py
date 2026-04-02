@@ -1,5 +1,5 @@
 """
-Cura3.ai — Diagnosis Routes
+Cura10.ai — Diagnosis Routes
 Run AI diagnosis, view results, download PDF, manage history.
 """
 from fastapi import APIRouter, HTTPException, Depends, status, Body
@@ -238,7 +238,7 @@ async def download_diagnosis_pdf(diagnosis_id: str, current_user: dict = Depends
     )
 
     patient = doc.get("patient_name", "diagnosis").replace(" ", "_")
-    filename = f"Cura3ai_Report_{patient}.pdf"
+    filename = f"Cura10ai_Report_{patient}.pdf"
 
     return StreamingResponse(
         io.BytesIO(pdf_bytes),

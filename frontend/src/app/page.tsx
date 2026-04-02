@@ -68,7 +68,7 @@ export default function LandingPage() {
         <div className={styles.headerInner}>
           <div className={styles.headerLogo}>
             <span className={styles.logoIcon}>🏥</span>
-            <span className={styles.logoText}>Cura3.ai</span>
+            <span className={styles.logoText}>Cura10.ai</span>
           </div>
           <nav className={styles.headerNav}>
             <a href="#features" className={styles.headerLink}>Features</a>
@@ -196,7 +196,7 @@ export default function LandingPage() {
         <div className={styles.footerInner}>
           <div className={styles.footerBrand}>
             <span className={styles.logoIcon}>🏥</span>
-            <span className={styles.logoText}>Cura3.ai</span>
+            <span className={styles.logoText}>Cura10.ai</span>
           </div>
           <div className={styles.footerLinks}>
             <a href="/terms">Terms of Service</a>
@@ -204,7 +204,7 @@ export default function LandingPage() {
             <a href="/disclaimer">Medical Disclaimer</a>
           </div>
           <p className={styles.footerCopy}>
-            &copy; 2026 Cura3.ai. For research and educational purposes only.
+            &copy; 2026 Cura10.ai. For research and educational purposes only.
             Not intended for clinical use.
           </p>
         </div>

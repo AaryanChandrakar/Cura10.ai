@@ -1,4 +1,4 @@
-# Cura3.ai Backend — Dockerfile
+# Cura10.ai Backend — Dockerfile
 FROM python:3.12-slim
 
 WORKDIR /app

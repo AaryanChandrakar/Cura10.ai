@@ -1,5 +1,5 @@
 """
-Cura3.ai — API Usage Tracking Middleware
+Cura10.ai — API Usage Tracking Middleware
 Tracks request counts per endpoint for API usage monitoring.
 Data stored in MongoDB `api_usage` collection.
 """

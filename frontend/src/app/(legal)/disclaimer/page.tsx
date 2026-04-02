@@ -3,8 +3,8 @@ import Link from 'next/link';
 import styles from '../legal.module.css';
 
 export const metadata: Metadata = {
-    title: 'Medical Disclaimer — Cura3.ai',
-    description: 'Important medical disclaimer for Cura3.ai AI-generated diagnosis reports.',
+    title: 'Medical Disclaimer — Cura10.ai',
+    description: 'Important medical disclaimer for Cura10.ai AI-generated diagnosis reports.',
 };
 
 export default function DisclaimerPage() {
@@ -14,12 +14,12 @@ export default function DisclaimerPage() {
 
             <div className={styles.legalHeader}>
                 <h1>Medical Disclaimer</h1>
-                <p>Please read this carefully before using Cura3.ai</p>
+                <p>Please read this carefully before using Cura10.ai</p>
             </div>
 
             <div className={styles.highlight}>
                 <p>
-                    <strong>IMPORTANT:</strong> Cura3.ai is an AI research and educational tool. It is NOT a
+                    <strong>IMPORTANT:</strong> Cura10.ai is an AI research and educational tool. It is NOT a
                     medical device, NOT a diagnostic tool, and NOT intended for clinical use. All AI-generated
                     outputs must NOT be used as a basis for medical decisions.
                 </p>
@@ -28,7 +28,7 @@ export default function DisclaimerPage() {
             <div className={styles.section}>
                 <h2>Purpose of the Platform</h2>
                 <p>
-                    Cura3.ai uses OpenAI GPT-4.1 to simulate multi-specialist analysis of medical reports.
+                    Cura10.ai uses OpenAI GPT-4.1 to simulate multi-specialist analysis of medical reports.
                     The platform is designed for:
                 </p>
                 <ul>
@@ -62,7 +62,7 @@ export default function DisclaimerPage() {
             <div className={styles.section}>
                 <h2>Liability</h2>
                 <p>
-                    Cura3.ai, its creators, contributors, and affiliates assume <strong>no liability</strong> for
+                    Cura10.ai, its creators, contributors, and affiliates assume <strong>no liability</strong> for
                     any harm, injury, or adverse outcomes resulting from the use of or reliance on AI-generated
                     reports. By using this platform, you acknowledge and accept these limitations.
                 </p>

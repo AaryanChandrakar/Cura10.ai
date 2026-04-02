@@ -1,5 +1,5 @@
 """
-Cura3.ai — FastAPI Application Entry Point
+Cura10.ai — FastAPI Application Entry Point
 Main application with CORS, lifecycle events, and route registration.
 """
 from fastapi import FastAPI, Depends

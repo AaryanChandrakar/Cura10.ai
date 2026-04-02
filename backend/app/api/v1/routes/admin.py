@@ -1,5 +1,5 @@
 """
-Cura3.ai — Admin Routes
+Cura10.ai — Admin Routes
 Admin-only endpoints for user management, system monitoring, audit logs, and API usage.
 """
 from fastapi import APIRouter, HTTPException, Depends, Query, status

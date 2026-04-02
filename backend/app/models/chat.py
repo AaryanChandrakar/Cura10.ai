@@ -1,5 +1,5 @@
 """
-Cura3.ai — Chat Data Models
+Cura10.ai — Chat Data Models
 """
 from pydantic import BaseModel, Field
 from typing import Optional, List, Literal

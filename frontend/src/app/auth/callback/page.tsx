@@ -13,7 +13,7 @@ function CallbackHandler() {
     useEffect(() => {
         const token = searchParams.get('token');
         if (token) {
-            localStorage.setItem('cura3_token', token);
+            localStorage.setItem('cura10_token', token);
             refreshUser().then(() => {
                 router.push('/dashboard');
             });
